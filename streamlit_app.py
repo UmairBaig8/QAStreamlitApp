@@ -15,12 +15,18 @@ with st.sidebar:
     pinecone_api_key = st.text_input("Pinecone API key", type="password")
     pinecone_env = st.text_input("Pinecone environment")
     pinecone_index = st.text_input("Pinecone index name")
-source_doc = st.file_uploader("Upload source document", type="pdf", label_visibility="collapsed")
+source_doc = st.file_uploader("Upload source document", type="pdf,csv,txt,log", label_visibility="collapsed")
 query = st.text_input("Enter your query")
+
+if not openai_api_key or not pinecone_api_key or not pinecone_env or not pinecone_index:
+    openai_api_key=st.secrets["OPENAI_API_KEY"]
+    pinecone_api_key=st.secrets["PINECONE_API_KEY"]
+    pinecone_env=st.secrets["PINECONE_API_ENV"]
+    pinecone_index=st.secrets["PINECONE_INDEX"]
 
 if st.button("Submit"):
     # Validate inputs
-    if not openai_api_key or not pinecone_api_key or not pinecone_env or not pinecone_index or not source_doc or not query:
+    if not openai_api_key or not pinecone_api_key or not pinecone_env or not pinecone_index or not query:
         st.warning(f"Please upload the document and provide the missing fields.")
     else:
         try:
